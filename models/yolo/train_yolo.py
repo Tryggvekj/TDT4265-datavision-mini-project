@@ -3,7 +3,7 @@ import sys
 import ultralytics
 from pathlib import Path
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parents[2]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
@@ -65,7 +65,7 @@ def main() -> None:
     train_yolo(
         model_name="yolo11m.pt",
         epochs=200,
-        imgsz=1280,
+        imgsz=1500,
         batch=4,
         run_name="run1",
         device="0",
