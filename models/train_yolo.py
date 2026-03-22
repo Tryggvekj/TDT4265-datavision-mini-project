@@ -75,7 +75,7 @@ def main() -> None:
         imgsz=768,
         batch=16,
         run_name="run1",
-        device="cpu",
+        device="0",
         hsv_h=0.015,
         hsv_s=0.7,
         hsv_v=0.4,
