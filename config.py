@@ -1,7 +1,7 @@
 from pathlib import Path
 
 # Internal folder paths
-DATA_YOLO = Path("data/data_iphone_yolo")
+DATA_YOLO = Path("datasets/dataset_iphone_yolo")
 
 # External folder and file paths
 DATA_FOLDER = Path("/cluster/projects/vc/courses/TDT17/ad/Poles2025")
