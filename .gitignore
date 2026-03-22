@@ -4,7 +4,9 @@ __pycache__/
 **/images/**
 **/labels/**
 **.pt
+!**models/weights/**
 runs/**
+results/**
 data_EfficientDet/checkpoints/
 data_EfficientDet/output/
 data_EfficientDet/backups/
