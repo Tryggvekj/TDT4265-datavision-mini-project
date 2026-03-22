@@ -7,5 +7,6 @@ __pycache__/
 runs/**
 data_EfficientDet/checkpoints/
 data_EfficientDet/output/
+data_EfficientDet/backups/
 *.pth
 sample_with_boxes.jpg
