@@ -1,4 +1,4 @@
-path: data/data_iphone_yolo
+path: datasets/dataset_iphone_yolo
 train: images/train
 val: images/val
 
