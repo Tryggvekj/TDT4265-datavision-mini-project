@@ -1,5 +1,5 @@
 #!/bin/sh
-#SBATCH --account=ie-idi
+#SBATCH --account=share-ie-idi
 #SBATCH --job-name=yolo-train-iphone
 #SBATCH --time=0-06:00:00
 
