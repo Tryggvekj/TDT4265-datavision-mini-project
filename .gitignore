@@ -1,5 +1,11 @@
 __pycache__
+__pycache__/
+*.pyc
 **/images/**
 **/labels/**
 **.pt
 runs/**
+data_EfficientDet/checkpoints/
+data_EfficientDet/output/
+*.pth
+sample_with_boxes.jpg
