@@ -1,5 +1,6 @@
 import importlib
 import sys
+import ultralytics
 from pathlib import Path
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -33,15 +34,7 @@ def train_yolo(
     mixup: float,
     copy_paste: float,
 ) -> None:
-    try:
-        ultralytics_module = importlib.import_module("ultralytics")
-    except ModuleNotFoundError as error:
-        raise ModuleNotFoundError(
-            "ultralytics is not installed for this Python interpreter. "
-            "Install it with: /usr/bin/python -m pip install --user ultralytics"
-        ) from error
-
-    YOLO = ultralytics_module.YOLO
+    YOLO = ultralytics.YOLO
 
     model = YOLO(model_name)
     model.train(
