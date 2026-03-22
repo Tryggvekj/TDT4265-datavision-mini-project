@@ -13,7 +13,7 @@
 #SBATCH --output=slurm-%j.out
 #SBATCH --error=slurm-%j.err
 
-#SBATCH --mail-user=your.email@ntnu.no
+#SBATCH --mail-user=tryggvek@ntnu.no
 #SBATCH --mail-type=ALL
 
 WORKDIR=${SLURM_SUBMIT_DIR}
@@ -24,12 +24,10 @@ echo "ID of job: $SLURM_JOB_ID"
 echo "The job was run on these nodes: $SLURM_JOB_NODELIST"
 
 module purge
-module load Anaconda/2020.07
+module load Miniconda3/24.7.1-0
 
-# Replace this with your actual conda environment name.
-# Example: conda activate tdt4265
 source $(conda info --base)/etc/profile.d/conda.sh
-conda activate YOUR_ENV_NAME
+conda activate tdt4265-mini-project
 
 # Quick runtime checks
 python -c "import torch; print('torch', torch.__version__); print('cuda_available', torch.cuda.is_available()); print('cuda_device_count', torch.cuda.device_count())"
