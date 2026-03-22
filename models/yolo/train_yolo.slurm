@@ -33,4 +33,4 @@ conda activate tdt4265-mini-project
 python -c "import torch; print('torch', torch.__version__); print('cuda_available', torch.cuda.is_available()); print('cuda_device_count', torch.cuda.device_count())"
 
 # Run training
-python models/train_yolo.py
+python models/yolo/train_yolo.py
