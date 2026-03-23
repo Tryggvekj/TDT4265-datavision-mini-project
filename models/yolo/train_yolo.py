@@ -66,7 +66,7 @@ def main() -> None:
         model_name="yolo11m.pt",
         epochs=200,
         imgsz=1080,
-        batch=12,
+        batch=6,
         run_name="run1",
         device="0",
         hsv_h=0.015,
