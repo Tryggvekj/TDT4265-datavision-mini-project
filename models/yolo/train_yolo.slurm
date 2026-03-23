@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 #SBATCH --account=share-ie-idi
 #SBATCH --job-name=yolo-train-iphone
-#SBATCH --time=0-06:00:00
+#SBATCH --time=0-12:00:00
 
 #SBATCH --partition=GPUQ
 #SBATCH --gres=gpu:1
@@ -18,6 +18,7 @@
 
 WORKDIR=${SLURM_SUBMIT_DIR}
 cd ${WORKDIR}
+set -euo pipefail
 echo "Running from this directory: $SLURM_SUBMIT_DIR"
 echo "Name of job: $SLURM_JOB_NAME"
 echo "ID of job: $SLURM_JOB_ID"
@@ -26,11 +27,11 @@ echo "The job was run on these nodes: $SLURM_JOB_NODELIST"
 module purge
 module load Miniconda3/24.7.1-0
 
-source $(conda info --base)/etc/profile.d/conda.sh
-conda activate tdt4265-mini-project
+echo "Using conda at: $(command -v conda)"
+conda env list | grep tdt4265-mini-project || true
 
 # Quick runtime checks
-python -c "import torch; print('torch', torch.__version__); print('cuda_available', torch.cuda.is_available()); print('cuda_device_count', torch.cuda.device_count())"
+conda run -n tdt4265-mini-project python -c "import torch; print('torch', torch.__version__); print('cuda_available', torch.cuda.is_available()); print('cuda_device_count', torch.cuda.device_count())"
 
 # Run training
-python models/yolo/train_yolo.py
+conda run -n tdt4265-mini-project python models/yolo/train_yolo.py
