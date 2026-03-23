@@ -63,10 +63,10 @@ def train_yolo(
 
 def main() -> None:
     train_yolo(
-        model_name="yolo11m.pt",
-        epochs=200,
+        model_name="yolo11s.pt",
+        epochs=100,
         imgsz=1080,
-        batch=6,
+        batch=12,
         run_name="run1",
         device="0",
         hsv_h=0.015,
