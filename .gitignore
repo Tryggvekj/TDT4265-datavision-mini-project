@@ -12,3 +12,4 @@ data_EfficientDet/output/
 data_EfficientDet/backups/
 *.pth
 sample_with_boxes.jpg
+.vscode/
