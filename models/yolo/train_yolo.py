@@ -1,4 +1,5 @@
 import argparse
+import shutil
 import sys
 import ultralytics
 from pathlib import Path
@@ -107,24 +108,33 @@ def run_optuna(
             batch=batch,
             run_name=run_name,
             device=device,
-            hsv_h=trial.suggest_float("hsv_h", 0.0, 0.03),
-            hsv_s=trial.suggest_float("hsv_s", 0.4, 0.9),
-            hsv_v=trial.suggest_float("hsv_v", 0.2, 0.7),
-            degrees=trial.suggest_float("degrees", 0.0, 20.0),
-            translate=trial.suggest_float("translate", 0.0, 0.2),
-            scale=trial.suggest_float("scale", 0.2, 0.8),
-            shear=trial.suggest_float("shear", 0.0, 5.0),
-            perspective=trial.suggest_float("perspective", 0.0, 0.0008),
-            flipud=trial.suggest_float("flipud", 0.0, 0.1),
-            fliplr=trial.suggest_float("fliplr", 0.2, 0.7),
-            mosaic=trial.suggest_float("mosaic", 0.5, 1.0),
-            mixup=trial.suggest_float("mixup", 0.0, 0.3),
-            copy_paste=trial.suggest_float("copy_paste", 0.0, 0.3),
+            hsv_h=trial.suggest_float("hsv_h", 0.0, 0.0),  # no hue shift
+            hsv_s=trial.suggest_float("hsv_s", 0.4, 0.7),  # mild saturation
+            hsv_v=trial.suggest_float("hsv_v", 0.2, 0.5),  # mild brightness
+            degrees=trial.suggest_float("degrees", 0.0, 5.0),  # small rotation
+            translate=trial.suggest_float("translate", 0.0, 0.1),  # small translation
+            scale=trial.suggest_float("scale", 0.7, 1.0),  # moderate scaling
+            shear=trial.suggest_float("shear", 0.0, 0.0),  # no shear
+            perspective=trial.suggest_float("perspective", 0.0, 0.0005),  # minimal perspective
+            flipud=trial.suggest_float("flipud", 0.0, 0.0),  # never flip upside down
+            fliplr=trial.suggest_float("fliplr", 0.0, 0.3),  # rare horizontal flip
+            mosaic=trial.suggest_float("mosaic", 0.7, 1.0),  # keep mosaic high
+            mixup=trial.suggest_float("mixup", 0.0, 0.1),  # low mixup
+            copy_paste=trial.suggest_float("copy_paste", 0.0, 0.1),  # low copy-paste
         )
         return _extract_map50_95(results)
 
     study = optuna.create_study(direction="maximize")
     study.optimize(objective, n_trials=n_trials)
+
+    best_trial_run = ROOT_DIR / "runs" / "yolo" / f"optuna_trial_{study.best_trial.number}"
+    best_trial_weights = best_trial_run / "weights" / "best.pt"
+    target_weights = ROOT_DIR / "best_optuna_weights.pt"
+    if best_trial_weights.exists():
+        shutil.copy2(best_trial_weights, target_weights)
+        print(f"Saved best Optuna weights to: {target_weights}")
+    else:
+        print(f"Warning: expected best weights not found at {best_trial_weights}")
 
     print("Optuna complete")
     print(f"Best mAP50-95: {study.best_value:.5f}")
