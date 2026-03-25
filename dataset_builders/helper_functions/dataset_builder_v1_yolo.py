@@ -8,18 +8,18 @@ if str(ROOT_DIR) not in sys.path:
 
 import config
 
-SOURCE_DATA_FOLDER_IPHONE: Path = config.DATA_FOLDER / config.FOLDER_IPHONE
+SOURCE_DATA_FOLDER_V1: Path = config.DATA_FOLDER / config.FOLDER_V1
 
-SOURCE_DATA_TRAIN: Path = SOURCE_DATA_FOLDER_IPHONE / config.TRAIN_FOLDER_IPHONE
-SOURCE_DATA_VAL: Path = SOURCE_DATA_FOLDER_IPHONE / config.VALIDATION_IMAGES_IPHONE
-SOURCE_LABEL_TRAIN: Path = SOURCE_DATA_FOLDER_IPHONE / config.TRAIN_LABEL_FOLDER_IPHONE
-SOURCE_LABEL_VAL: Path = SOURCE_DATA_FOLDER_IPHONE / config.VALIDATION_LABEL_FOLDER_IPHONE
+SOURCE_DATA_TRAIN: Path = SOURCE_DATA_FOLDER_V1 / config.TRAIN_FOLDER_V1
+SOURCE_DATA_VAL: Path = SOURCE_DATA_FOLDER_V1 / config.VALIDATION_IMAGES_V1
+SOURCE_LABEL_TRAIN: Path = SOURCE_DATA_FOLDER_V1 / config.TRAIN_LABEL_FOLDER_V1
+SOURCE_LABEL_VAL: Path = SOURCE_DATA_FOLDER_V1 / config.VALIDATION_LABEL_FOLDER_V1
 
 # needed data structure for yolo model
-DESTINATION_DATA_TRAIN_YOLO: Path = config.DATA_YOLO_IPHONE / "images/train"
-DESTINATION_DATA_VAL_YOLO: Path = config.DATA_YOLO_IPHONE / "images/val"
-DESTINATION_LABEL_TRAIN_YOLO: Path = config.DATA_YOLO_IPHONE / "labels/train"
-DESTINATION_LABEL_VAL_YOLO: Path = config.DATA_YOLO_IPHONE / "labels/val"
+DESTINATION_DATA_TRAIN_YOLO: Path = config.DATA_YOLO_V1 / "images/train"
+DESTINATION_DATA_VAL_YOLO: Path = config.DATA_YOLO_V1 / "images/val"
+DESTINATION_LABEL_TRAIN_YOLO: Path = config.DATA_YOLO_V1 / "labels/train"
+DESTINATION_LABEL_VAL_YOLO: Path = config.DATA_YOLO_V1 / "labels/val"
 
 
 def _render_progress(completed: int, total: int, width: int = 30) -> None:
@@ -59,7 +59,7 @@ def _copy_files_from_source() -> None:
         _render_progress(copied_count, total_files)
 
 
-def build_data_iphone() -> None:
+def build_data_v1() -> None:
     destination_dirs = (
         DESTINATION_DATA_TRAIN_YOLO,
         DESTINATION_DATA_VAL_YOLO,
@@ -73,4 +73,4 @@ def build_data_iphone() -> None:
     _copy_files_from_source()
 
 if __name__ == "__main__":
-    build_data_iphone()
+    build_data_v1()
