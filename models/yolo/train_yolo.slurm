@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --account=share-ie-idi
 #SBATCH --job-name=yolo-train-iphone
-#SBATCH --time=0-12:00:00
+#SBATCH --time=0-24:00:00
 
 #SBATCH --partition=GPUQ
 #SBATCH --gres=gpu:1
@@ -34,4 +34,4 @@ conda env list | grep tdt4265-mini-project || true
 conda run -n tdt4265-mini-project python -c "import torch; print('torch', torch.__version__); print('cuda_available', torch.cuda.is_available()); print('cuda_device_count', torch.cuda.device_count())"
 
 # Run training
-conda run -n tdt4265-mini-project python models/yolo/train_yolo.py --optuna --n-trials 20
+conda run -n tdt4265-mini-project python models/yolo/train_yolo.py --optuna --n-trials 3
