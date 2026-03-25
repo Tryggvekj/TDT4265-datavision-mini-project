@@ -1,0 +1,6 @@
+path: datasets/dataset_iphone_v1
+train: images/train
+val: images/val
+
+names:
+  0: pole
