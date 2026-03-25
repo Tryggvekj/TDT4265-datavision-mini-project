@@ -12,8 +12,8 @@ if str(ROOT_DIR) not in sys.path:
 
 import config
 
-DATA_DIR = config.DATA_YOLO
-DATA_YAML = config.DATA_YOLO / "data.yaml"
+DATA_DIR = config.DATA_YOLO_IPHONE
+DATA_YAML = config.DATA_YOLO_IPHONE / "data.yaml"
 
 
 def train_yolo(
