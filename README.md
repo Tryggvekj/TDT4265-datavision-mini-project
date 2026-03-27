@@ -52,6 +52,12 @@ Submit training job:
 sbatch models/yolo/train_yolo.slurm
 ```
 
+For EfficientDet training, use:
+
+```bash
+sbatch data_EfficientDet/train_efficientdet.slurm
+```
+
 After running, you wil get a jobid which you can use to check output log and error log.
 
 Monitor jobs:

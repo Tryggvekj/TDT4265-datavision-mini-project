@@ -36,6 +36,12 @@ python data_EfficientDet/train.py \
   --img-size 512
 ```
 
+On IDUN, you can instead submit the batch job:
+
+```bash
+sbatch data_EfficientDet/train_efficientdet.slurm
+```
+
 Key arguments:
 - `--model`: Choose D0 (small, fast), D1, D2, etc. based on resources
 - `--num-classes`: 1 for road pole detection
