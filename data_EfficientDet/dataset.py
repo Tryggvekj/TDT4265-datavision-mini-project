@@ -39,9 +39,9 @@ class EfficientDetDataset(Dataset):
         if self.augment:
             self.transforms = A.Compose([
                 A.HorizontalFlip(p=0.5),
-                A.VerticalFlip(p=0.3),
+                #A.VerticalFlip(p=0.3),
                 A.RandomBrightnessContrast(p=0.3),
-                A.Rotate(limit=15, p=0.5),
+                A.Rotate(limit=10, p=0.3),
                 A.GaussNoise(p=0.2),
                 A.Resize(height=img_size, width=img_size),
                 ToTensorV2(),

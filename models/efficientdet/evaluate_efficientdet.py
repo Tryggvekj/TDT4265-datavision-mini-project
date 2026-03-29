@@ -392,7 +392,7 @@ def main():
         default=str(Path(__file__).resolve().parent / "weights" / "best_model.pth"),
         help="Path to checkpoint",
     )
-    parser.add_argument("--model", type=str, default="efficientdet_d0")
+    parser.add_argument("--model", type=str, default="tf_efficientdet_d3")
     parser.add_argument(
         "--train-csv",
         type=str,
@@ -413,7 +413,7 @@ def main():
     parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument("--conf-threshold", type=float, default=0.5, help="Confidence threshold for Precision/Recall")
     parser.add_argument("--num-classes", type=int, default=1)
-    parser.add_argument("--img-size", type=int, default=512)
+    parser.add_argument("--img-size", type=int, default=896)
     parser.add_argument("--num-workers", type=int, default=2)
     parser.add_argument(
         "--pred-label-offset",
@@ -429,7 +429,7 @@ def main():
     parser.add_argument(
         "--output-dir",
         type=str,
-        default=str(Path(__file__).resolve().parent / "predictions"),
+        default=str(Path(__file__).resolve().parent / "saved_models"),
         help="Output directory for results and prediction images",
     )
     args = parser.parse_args()

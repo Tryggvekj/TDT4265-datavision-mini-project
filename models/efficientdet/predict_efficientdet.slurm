@@ -1,14 +1,13 @@
 #!/bin/bash
 #SBATCH --account=share-ie-idi
 #SBATCH --job-name=effdet_d3_896
-#SBATCH --time=0-24:00:00
+#SBATCH --time=0-00:30:00
 #SBATCH --partition=GPUQ
 #SBATCH --gres=gpu:v100:1
 #SBATCH --mem=32G
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
-#SBATCH --constraint=gpu32g|gpu40g|gpu80g
 #SBATCH --output=slurm-%j.out
 #SBATCH --error=slurm-%j.err
 
@@ -42,11 +41,12 @@ print('device_name', torch.cuda.get_device_name(0) if torch.cuda.is_available() 
 "
 
 srun ${CONDA_BIN} run -p ${ENV_PATH} --no-capture-output \
-python models/efficientdet/train_efficientdet.py \
-  --model tf_efficientdet_d3 \
-  --num-classes 1 \
+python models/efficientdet/predict_submission.py \
+  --model-path /cluster/home/svanhigb/TDT4265-datavision-mini-project/models/efficientdet/weights_finetune896_lr/best_model.pth \
+  --model-name tf_efficientdet_d3 \
+  --test-dir /cluster/projects/vc/courses/TDT17/ad/Poles2025/roadpoles_v1/test/images \
+  --output-dir submissions_finetune896_lr \
   --img-size 896 \
-  --epochs 50 \
-  --batch-size 4 \
-  --num-workers ${SLURM_CPUS_PER_TASK} \
-  --output-dir models/efficientdet/weights_img896 
+  --conf-threshold 0.25 \
+  --nms-threshold 0.4 \
+  --create-zip
