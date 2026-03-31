@@ -26,7 +26,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--images-dir",
         type=Path,
-        default=config.DATA_YOLO / "images" / "val",
+        default=config.DATA_YOLO_IPHONE / "images" / "val",
         help="Directory with images to evaluate",
     )
     parser.add_argument(
