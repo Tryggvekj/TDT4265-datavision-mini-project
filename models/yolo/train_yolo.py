@@ -70,6 +70,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--n-trials", type=int, default=12, help="Number of Optuna trials")
     parser.add_argument("--optuna-epochs", type=int, default=25, help="Epochs per Optuna trial")
     parser.add_argument("--run-name", type=str, default="run", help="Run name for non-Optuna training")
+    parser.add_argument("--continue-from-model", type=str, default="", help="Path for weights to continue training from pre-trained model")
     return parser.parse_args()
 
 
@@ -147,6 +148,10 @@ def main() -> None:
     args = parse_args()
 
     model_name = "yolo11s.pt"
+
+    if args.continue_from_model:
+        model_name = args.continue_from_model
+
     epochs = 100
     imgsz = 1080
     batch = 12
