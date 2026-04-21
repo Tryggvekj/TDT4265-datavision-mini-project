@@ -107,7 +107,6 @@ class EfficientDetDataset(Dataset):
         else:
             img_tensor = torch.from_numpy(img_np).permute(2, 0, 1)
 
-        # Konverter tilbake fra xyxy -> yxyx for effdet
         boxes_yxyx = []
         for box in boxes_xyxy:
             x1, y1, x2, y2 = box
@@ -120,8 +119,8 @@ class EfficientDetDataset(Dataset):
         labels_tensor = torch.from_numpy(labels)
 
         target = {
-            "boxes": boxes_tensor,   # y1, x1, y2, x2
-            "labels": labels_tensor, # 1-indexed classes
+            "boxes": boxes_tensor,
+            "labels": labels_tensor,
             "image_id": torch.tensor([idx], dtype=torch.int64),
             "img_size": torch.tensor([self.img_size, self.img_size], dtype=torch.float32),
             "img_scale": torch.tensor([1.0], dtype=torch.float32),
@@ -164,8 +163,8 @@ def collate_fn(batch):
 
     return {
         "images": images,
-        "bbox": torch.stack(batch_boxes),   # [B, N, 4] in yxyx
-        "cls": torch.stack(batch_labels),   # [B, N]
+        "bbox": torch.stack(batch_boxes),
+        "cls": torch.stack(batch_labels),
         "img_size": torch.stack(batch_img_size),
         "img_scale": torch.stack(batch_img_scale),
         "image_id": torch.stack(batch_image_id).squeeze(1),
