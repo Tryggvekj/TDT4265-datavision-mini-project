@@ -24,20 +24,15 @@ from effdet import DetBenchPredict, create_model
 from PIL import Image
 from tqdm import tqdm
 
-
-# Navigate to project root (3 levels up from models/efficientdet/)
 ROOT_DIR = Path(__file__).resolve().parents[2]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-
 def build_transform(img_size: int):
-    # No normalization (must match training - dataset.py doesn't use normalization)
     return A.Compose([
         A.Resize(height=img_size, width=img_size),
         ToTensorV2(),
     ])
-
 
 def load_model(model_path: str, model_name: str, num_classes: int, device: torch.device):
     model = create_model(
@@ -140,8 +135,6 @@ def predict_one_image(model, image_path: Path, transform, device, img_size: int,
     transformed = transform(image=img_np)
     img_tensor = transformed["image"].unsqueeze(0).to(device).float()
 
-    # We resized to img_size x img_size before inference.
-    # Predict bench returns boxes in resized-image coordinates, so we scale back.
     scale_x = orig_w / float(img_size)
     scale_y = orig_h / float(img_size)
 

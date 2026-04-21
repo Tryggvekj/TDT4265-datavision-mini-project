@@ -39,10 +39,19 @@ class EfficientDetDataset(Dataset):
         if self.augment:
             self.transforms = A.Compose([
                 A.HorizontalFlip(p=0.5),
-                #A.VerticalFlip(p=0.3),
-                A.RandomBrightnessContrast(p=0.3),
-                A.Rotate(limit=10, p=0.3),
-                A.GaussNoise(p=0.2),
+                A.RandomBrightnessContrast(p=0.2),
+                #A.Rotate(limit=6, p=0.25)
+                A.Affine(
+                    scale=(0.8, 1.2),
+                    translate_percent=(-0.05, 0.05),
+                    rotate=(-7, 7),
+                    shear=(-3, 3),
+                    p=0.6
+                ),
+                A.OneOf([
+                    A.GaussNoise(p=1.0),
+                    A.GaussianBlur(blur_limit=(3, 5),p=1.0),
+                ], p=0.2),
                 A.Resize(height=img_size, width=img_size),
                 ToTensorV2(),
             ], bbox_params=A.BboxParams(
@@ -59,7 +68,7 @@ class EfficientDetDataset(Dataset):
                 label_fields=["class_labels"],
                 min_visibility=0.3
             ))
-
+            
     def __len__(self):
         return len(self.image_paths)
 
@@ -187,5 +196,4 @@ def create_dataloaders(train_csv: str, val_csv: str, batch_size: int = 8,
         collate_fn=collate_fn,
         pin_memory=True,
     )
-
     return train_loader, val_loader

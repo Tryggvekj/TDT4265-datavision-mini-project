@@ -17,7 +17,7 @@ ROOT_DIR = Path(__file__).resolve().parents[2]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from data_EfficientDet.dataset import create_dataloaders
+from data_EfficientDet.dataset_v1 import create_dataloaders
 
 
 class AverageMeter:
@@ -132,24 +132,64 @@ def main(args):
     print("first image labels:", batch["cls"][0][:5])
     
     # Create model
-    print(f"Creating model: {args.model}...")
-    if not args.no_pretrained:
-        model = create_model(args.model, pretrained=True, num_classes=args.num_classes)
-        print(f"Loaded pretrained weights for {args.model}")
-    else:
-        config = get_efficientdet_config(args.model)
-        config.num_classes = args.num_classes
-        model = EfficientDet(config)
-        print(f"Created model {args.model} from scratch")
+    # print(f"Creating model: {args.model}...")
+    # if not args.no_pretrained:
+    #     model = create_model(args.model, pretrained=True, num_classes=args.num_classes)
+    #     print(f"Loaded pretrained weights for {args.model}")
+    # else:
+    #     config = get_efficientdet_config(args.model)
+    #     config.num_classes = args.num_classes
+    #     model = EfficientDet(config)
+    #     print(f"Created model {args.model} from scratch")
         
+    # if args.resume is not None:
+    #     print(f"Loading checkpoint from {args.resume}")
+    #     checkpoint = torch.load(args.resume, map_location=device)
+    #     model.load_state_dict(checkpoint['model_state_dict'])
+    
+    ### Test
+    config = get_efficientdet_config(args.model)
+    config.num_classes = args.num_classes
+    config.image_size = (args.img_size, args.img_size)
+
+    # prøv stolpevennlige anchors
+    config.aspect_ratios = [0.125, 0.2, 0.33, 0.5]
+    config.num_scales = 3
+    config.anchor_scale = 4.0
+
+    model = EfficientDet(config, pretrained_backbone=not args.no_pretrained)
+
     if args.resume is not None:
         print(f"Loading checkpoint from {args.resume}")
         checkpoint = torch.load(args.resume, map_location=device)
-        model.load_state_dict(checkpoint['model_state_dict'])
+        state_dict = checkpoint['model_state_dict']
+
+        model_state = model.state_dict()
+        filtered_state_dict = {}
+
+        skipped = []
+        for k, v in state_dict.items():
+            if k in model_state and model_state[k].shape == v.shape:
+                filtered_state_dict[k] = v
+            else:
+                skipped.append(k)
+
+        print(f"Loading {len(filtered_state_dict)} matching tensors from checkpoint")
+        print(f"Skipping {len(skipped)} tensors due to missing key or shape mismatch")
+        for k in skipped:
+            print(f"  skipped: {k}")
+
+        load_result = model.load_state_dict(filtered_state_dict, strict=False)
+        print("Missing keys:", load_result.missing_keys)
+        print("Unexpected keys:", load_result.unexpected_keys)
+
+    model = model.to(device)
+    model_bench = DetBenchTrain(model).to(device)
     
     model = model.to(device)
     model_bench = DetBenchTrain(model).to(device)
     
+    ###
     optimizer = optim.AdamW(model_bench.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs)
     scaler = torch.cuda.amp.GradScaler() if args.amp else None
