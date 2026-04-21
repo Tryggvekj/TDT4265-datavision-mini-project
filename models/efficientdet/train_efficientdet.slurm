@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --account=share-ie-idi
-#SBATCH --job-name=effdet_d3_896
+#SBATCH --job-name=effdet_d4_1024
 #SBATCH --time=0-24:00:00
 #SBATCH --partition=GPUQ
-#SBATCH --gres=gpu:v100:1
+#SBATCH --gres=gpu:1
 #SBATCH --mem=32G
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -43,10 +43,12 @@ print('device_name', torch.cuda.get_device_name(0) if torch.cuda.is_available() 
 
 srun ${CONDA_BIN} run -p ${ENV_PATH} --no-capture-output \
 python models/efficientdet/train_efficientdet.py \
-  --model tf_efficientdet_d3 \
+  --model tf_efficientdet_d4 \
   --num-classes 1 \
-  --img-size 896 \
+  --img-size 1024 \
   --epochs 50 \
-  --batch-size 4 \
+  --batch-size 8 \
+  --lr 4e-5 \
   --num-workers ${SLURM_CPUS_PER_TASK} \
-  --output-dir models/efficientdet/weights_img896 
+  --output-dir models/efficientdet/Roadpoles_v1/weights_img1024_BC8
+  

@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --account=share-ie-idi
-#SBATCH --job-name=effdet_eval_896
-#SBATCH --time=0-04:00:00
+#SBATCH --job-name=effdet_eval
+#SBATCH --time=0-00:20:00
 #SBATCH --partition=GPUQ
-#SBATCH --gres=gpu:v100:1
+#SBATCH --gres=gpu:1
 #SBATCH --mem=32G
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -26,11 +26,12 @@ ENV_PATH=/cluster/home/svanhigb/.conda/envs/efficientdet
 
 srun ${CONDA_BIN} run -p ${ENV_PATH} --no-capture-output \
 python models/efficientdet/evaluate_efficientdet.py \
-  --model-path models/efficientdet/weights_finetune896_lr/best_model.pth
-  --model tf_efficientdet_d3 \
+  --model-path models/efficientdet/Roadpoles_iphone/weights_img1024_aug8/best_model.pth \
+  --model tf_efficientdet_d4 \
   --num-classes 1 \
-  --img-size 896 \
+  --img-size 1024 \
   --split valid \
-  --batch-size 4 \
+  --batch-size 2 \
+  --conf-threshold 0.3 \
   --num-workers ${SLURM_CPUS_PER_TASK} \
-  --output-dir models/efficientdet/saved_models/finetune896_lr_eval
+  --output-dir models/efficientdet/Roadpoles_iphone/Evaluations/eval_img1024_aug8

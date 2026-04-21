@@ -42,11 +42,11 @@ print('device_name', torch.cuda.get_device_name(0) if torch.cuda.is_available() 
 
 srun ${CONDA_BIN} run -p ${ENV_PATH} --no-capture-output \
 python models/efficientdet/predict_submission.py \
-  --model-path /cluster/home/svanhigb/TDT4265-datavision-mini-project/models/efficientdet/weights_finetune896_lr/best_model.pth \
-  --model-name tf_efficientdet_d3 \
+  --model-path /cluster/home/svanhigb/TDT4265-datavision-mini-project/models/efficientdet/Roadpoles_v1/weights_img1024_ft/best_model.pth \
+  --model-name tf_efficientdet_d4 \
   --test-dir /cluster/projects/vc/courses/TDT17/ad/Poles2025/roadpoles_v1/test/images \
-  --output-dir submissions_finetune896_lr \
-  --img-size 896 \
+  --output-dir sub_v1/submissions_img1024_ft_025\
+  --img-size 1024 \
   --conf-threshold 0.25 \
   --nms-threshold 0.4 \
   --create-zip
